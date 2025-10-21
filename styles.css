@@ -1328,14 +1328,63 @@ margin-right: 50px;
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 10px;
-     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+     /* Запускаем анимацию пульсации */
+    position: relative; 
+    z-index: 1; 
+    transition: all 0.3s ease-in-out;
+    overflow: visible; /* Меняем на visible, чтобы тень свободно пульсировала */
+    
+    /* Запускаем анимацию пульсации */
+    animation: pulse-glow 2s infinite ease-in-out; 
+    
+    /* Добавляем базовую мягкую тень к самой кнопке для лучшего выделения */
+    box-shadow: 0 0 5px rgba(185, 95, 69, 0.5);
+}
+* 3. Создаем ПСЕВДОЭЛЕМЕНТ для эффекта СВЕЧЕНИЯ */
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px; 
+    
+    /* !!! ДЕЛАЕМ ТЕНЬ ЗНАЧИТЕЛЬНО БОЛЕЕ ИНТЕНСИВНОЙ !!! */
+    /* Увеличиваем радиус размытия (40px) и силу тени (0.9) */
+    box-shadow: 0 0 40px rgba(185, 95, 69, 0.9); 
+    
+    background: transparent; 
+    z-index: 0; 
+    border-radius: 8px; 
+    
+    /* Запускаем ту же яркую анимацию */
+    animation: pulse-glow 2s infinite ease-in-out; 
 }
 
 .cta-button:hover {
-    background-color: #c76f58;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Тень сильнее */
-    transform: translateY(-2px); /* Кнопка слегка поднимается */
+    background-color: #c76f58; 
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Возвращаем стандартную тень */
+    animation: none; /* Останавливаем пульсацию */
+}
+.cta-button:hover::before {
+    /* Убираем свечение при наведении, чтобы не мешало*/
+    box-shadow: none; 
+    /* Или можно изменить, например, на белую тень */
+}
+@keyframes pulse-glow {
+    0% {
+        transform: scale(1);
+        opacity: 1; /* !!! Увеличиваем до 1: Свечение будет ярким !!! */
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8; /* Небольшое уменьшение, чтобы создать эффект пульсации */
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .cta-disclaimer {
